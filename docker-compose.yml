@@ -1,0 +1,11 @@
+services:
+  mongo:  #service name (also becomes its internal DNS name)
+    image: mongo:7
+    ports:
+      - "27017:27017" #Host:Container => lets tools on pc reach MongoDB
+    volumes:
+      - mongodata:/data/db #persist data in a named volume
+    environment:
+      MONGO_INITDB_DATABASE: appdb #optional sets an intial DB name
+volumes:
+  mongodata: #declares the names volume used above      
