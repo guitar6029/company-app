@@ -6,13 +6,12 @@ import { DataTable } from "./data-table";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Employee } from "@/app/types/Employee";
 
-
 type EmployeeResponse = {
   data: Employee[];
   totalRows: number;
   page: number;
   pageSize: number;
-}
+};
 
 async function getEmployees(pageIndex: number, pageSize: number) {
   try {
@@ -26,23 +25,21 @@ async function getEmployees(pageIndex: number, pageSize: number) {
     return data;
   } catch (error) {
     console.error("Error fetching employees:", error);
-    return {data: [], page: 1, pageSize: 10, totalRows: 0, totalPages: 0};
+    return { data: [], page: 1, pageSize: 10, totalRows: 0, totalPages: 0 };
   }
 }
 
 export default function DirectoryCLient() {
-
-
   //pagination state
-  const [ pageIndex, setPageIndex] = useState(0);
-  const [ pageSizeState, setPageSizeState] = useState(10);
-
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSizeState, setPageSizeState] = useState(10);
 
   //fetch data
   const { data, isLoading, isError } = useQuery({
     queryKey: ["employees", pageIndex, pageSizeState],
-    queryFn: () : Promise<EmployeeResponse> => getEmployees(pageIndex, pageSizeState),
-    placeholderData: keepPreviousData
+    queryFn: (): Promise<EmployeeResponse> =>
+      getEmployees(pageIndex, pageSizeState),
+    placeholderData: keepPreviousData,
   });
 
   if (isError) {

@@ -1,24 +1,28 @@
 services:
-  mongo:  #service name (also becomes its internal DNS name)
+  mongo:
     image: mongo:7
     ports:
-      - "27017:27017" #Host:Container => lets tools on pc reach MongoDB
+      - "27017:27017"
     volumes:
-      - mongodata:/data/db #persist data in a named volume
+      - mongodata:/data/db
     environment:
-      MONGO_INITDB_DATABASE: appdb #optional sets an intial DB name
+      MONGO_INITDB_DATABASE: appdb
 
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
-    ports: 
+    ports:
       - "3001:3000"
     volumes:
-       - grafana-storage:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
-      GF_PLUGINS_PREINSTALL_SYNC: "marcusolsson-json-datasource" # free JSON API plugin for Grafana
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"   # safer than Admin
+      GF_PLUGINS_PREINSTALL: "marcusolsson-json-datasource"
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+      GF_SECURITY_COOKIE_SAMESITE: "none"
+      # Optional but nice to have:
+      GF_SERVER_ROOT_URL: "http://localhost:3001/"
 volumes:
-  mongodata: #declares the names volume used above
-  grafana-storage: #for grafana    
+  mongodata:
+  grafana-storage:
