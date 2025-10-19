@@ -38,6 +38,8 @@ interface DataTableProps<TData, TValue> {
   totalRows: number;
   page: number;
   pageSize: number;
+  onPageIndexChange: (pageIndex: number) => void;
+  onPageSizeChange: (pageSize: number) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +48,8 @@ export function DataTable<TData, TValue>({
   totalRows,
   page,
   pageSize,
+  onPageIndexChange,
+  //onPageSizeChange
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -71,6 +75,10 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
       columnVisibility,
+      pagination: {
+        pageIndex: page - 1,
+        pageSize
+      }
     },
   });
 
@@ -166,15 +174,23 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
+          //onClick={() => table.previousPage()}
+          onClick={() => onPageIndexChange(page - 2)}
           disabled={!table.getCanPreviousPage()}
         >
           Previous
         </Button>
+
+            <span>
+              Page {page} of {Math.ceil(totalRows/ pageSize)}
+            </span>
+
+
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
+          //onClick={() => table.nextPage()}
+          onClick={() => onPageIndexChange(page)}
           disabled={!table.getCanNextPage()}
         >
           Next

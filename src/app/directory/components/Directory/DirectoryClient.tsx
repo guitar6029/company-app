@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Employee } from "@/app/types/Employee";
 
 
@@ -41,7 +41,8 @@ export default function DirectoryCLient() {
   //fetch data
   const { data, isLoading, isError } = useQuery({
     queryKey: ["employees", pageIndex, pageSizeState],
-    queryFn: () : Promise<EmployeeResponse> =>getEmployees(pageIndex, pageSizeState),
+    queryFn: () : Promise<EmployeeResponse> => getEmployees(pageIndex, pageSizeState),
+    placeholderData: keepPreviousData
   });
 
   if (isError) {
@@ -65,6 +66,8 @@ export default function DirectoryCLient() {
         totalRows={totalRows}
         page={page}
         pageSize={pageSize}
+        onPageIndexChange={setPageIndex}
+        onPageSizeChange={setPageSizeState}
       />
     </div>
   );
