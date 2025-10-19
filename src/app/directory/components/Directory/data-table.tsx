@@ -35,11 +35,17 @@ import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  totalRows: number;
+  page: number;
+  pageSize: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  totalRows,
+  page,
+  pageSize,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -59,6 +65,8 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    manualPagination: true,
+    pageCount: Math.ceil(totalRows / pageSize),
     state: {
       sorting,
       columnFilters,
