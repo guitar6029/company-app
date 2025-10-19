@@ -23,6 +23,7 @@ services:
       GF_SECURITY_COOKIE_SAMESITE: "none"
       # Optional but nice to have:
       GF_SERVER_ROOT_URL: "http://localhost:3001/"
+      GF_EXPLORE_ENABLED: "false"
 volumes:
   mongodata:
   grafana-storage:
